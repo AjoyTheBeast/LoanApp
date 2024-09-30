@@ -19,12 +19,12 @@ steps:
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
-    azureSubscription: 'Free Trial(1)(f10052b9-3031-4345-903a-48dc36d8df22)'
+    azureSubscription: 'Free Trial(2)(f10052b9-3031-4345-903a-48dc36d8df22)'
     appType: 'webApp'
-    WebAppName: 'LoanAppWB'
+    WebAppName: 'LoanAppKA'
     deployToSlotOrASE: true
     ResourceGroupName: 'Dotnet_Trial1'
     SlotName: 'production'
     packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
-    
+  
 - task: PublishBuildArtifacts@1
