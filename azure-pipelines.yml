@@ -35,7 +35,7 @@ steps:
 # Corrected path for artifact publishing
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/*.zip'  # Adjusted to point to the ZIP file directly
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'  # Adjusted to point to the ZIP file directly
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
