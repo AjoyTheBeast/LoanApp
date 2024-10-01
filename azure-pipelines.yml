@@ -27,4 +27,3 @@ steps:
     SlotName: 'production'
     packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
   
-- task: PublishBuildArtifacts@1
