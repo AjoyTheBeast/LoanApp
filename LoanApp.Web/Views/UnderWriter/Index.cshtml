@@ -5,53 +5,44 @@
 <form method="post" asp-action="LoanRequest">
     <br />
     <div class="container border p-4 shadow-lg rounded" style="max-width: 700px; margin: auto;">
-        <h1 class="text-black text-center mb-4">Apply For Loan</h1>
+        <h1 class="text-black text-center mb-4">Underwriting</h1>
         <div class="row">
             <div class="col-md-3">
                 <label class="control-label pt-2" style="font-size:18px;">Name</label>
             </div>
             <div class="col-md-9 pb-3">
-                <input asp-for="Name" class="form-control"/>
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <input asp-for="Name" class="form-control" readonly="readonly" />
             </div>
             <div class="col-md-3">
                 <label class="control-label pt-2" style="font-size:18px;">Address</label>
             </div>
             <div class="col-md-9 pb-3">
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
+                <input asp-for="Address" class="form-control" readonly="readonly" />
             </div>
             <div class="col-md-3">
                 <label class="control-label pt-2" style="font-size:18px;">CreditScore</label>
             </div>
             <div class="col-md-9 pb-3">
-                <input asp-for="CreditScore" class="form-control" />
-                <span asp-validation-for="CreditScore" class="text-danger"></span>
+                <input asp-for="CreditScore" class="form-control" readonly="readonly" />
             </div>
             <div class="col-md-3">
                 <label class="control-label pt-2" style="font-size:18px;">IdentificationNo</label>
             </div>
             <div class="col-md-9 pb-3">
-                <input asp-for="ApplicantId" class="form-control" />
-                <span asp-validation-for="ApplicantId" class="text-danger"></span>
+                <input asp-for="ApplicantId" class="form-control" readonly="readonly" />
             </div>
             <div class="col-md-3">
                 <label class="control-label pt-2" style="font-size:18px;">LoanAmount</label>
             </div>
             <div class="col-md-9 pb-3">
-                <input asp-for="LoanAmount" class="form-control" />
-                <span asp-validation-for="LoanAmount" class="text-danger"></span>
+                <input asp-for="LoanAmount" class="form-control" readonly="readonly" />
             </div>
             <div class="col-md-9">
-                <button type="submit" class="btn btn-danger btn-lg" onclick="@("window.location.href='" + @Url.Action("Index", "DashBoard") + "'");" >Back</button>
+                <button value="deny" class="btn btn-danger btn-lg" onclick="@("window.location.href='" + @Url.Action("Index", "DashBoard") + "'");">Deny</button>
             </div>
             <div class="col-md-3">
-                <button type="submit" class="btn btn-success btn-lg">Next</button>
+                <button type="submit" class="btn btn-success btn-lg">Approve</button>
             </div>
         </div>
     </div>
 </form>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
