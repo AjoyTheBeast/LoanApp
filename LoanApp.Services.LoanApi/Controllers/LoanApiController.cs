@@ -27,7 +27,9 @@ namespace LoanApp.Services.LoanApi.Controllers
                     Address = loanRequestDTO.Address,
                     CreditScore = loanRequestDTO.CreditScore,
                     LoanAmount = loanRequestDTO.LoanAmount,
-                    ApplicantId = loanRequestDTO.ApplicantId
+                    ApplicantId = loanRequestDTO.ApplicantId,
+                    Email = loanRequestDTO.Email,
+                    AnnualAmount = loanRequestDTO.AnnualAmount
                 };
                 _dbContext.LoanRequests.Add(request);
                 await _dbContext.SaveChangesAsync();
