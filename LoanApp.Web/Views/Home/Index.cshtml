@@ -39,19 +39,41 @@
                 <label class="control-label pt-2" style="font-size:18px;">LoanAmount</label>
             </div>
             <div class="col-md-9 pb-3">
-                <input asp-for="LoanAmount" class="form-control" />
+                <input type="range" asp-for="LoanAmount" min="10000" max="500000" step="1000"
+                       class="form-range"
+                       oninput="updateLoanAmountOutput(this.value)" />
+                <output id="loanAmountOutput" class="form-control" style="border: none;">@Model.LoanAmount</output>
                 <span asp-validation-for="LoanAmount" class="text-danger"></span>
+            </div>
+            <div class="col-md-3">
+                <label class="control-label pt-2" style="font-size:18px;">Email</label>
+            </div>
+            <div class="col-md-9 pb-3">
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="col-md-3">
+                <label class="control-label pt-2" style="font-size:18px;">AnnualAmt</label>
+            </div>
+            <div class="col-md-9 pb-3">
+                <input asp-for="AnnualAmount" class="form-control" />
+                <span asp-validation-for="AnnualAmount" class="text-danger"></span>
             </div>
             <div class="col-md-9">
                 <button type="submit" class="btn btn-danger btn-lg" onclick="@("window.location.href='" + @Url.Action("Index", "DashBoard") + "'");" >Back</button>
             </div>
             <div class="col-md-3">
-                <button type="submit" class="btn btn-success btn-lg">Next</button>
+                <button type="submit" class="btn btn-success btn-lg">Start Process</button>
             </div>
         </div>
     </div>
 </form>
 
 @section Scripts {
+    <script>
+        function updateLoanAmountOutput(value) {
+            document.getElementById("loanAmountOutput").value = value;
+        }
+    </script>
     <partial name="_ValidationScriptsPartial" />
 }
