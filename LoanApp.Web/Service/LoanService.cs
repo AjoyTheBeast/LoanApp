@@ -17,7 +17,7 @@ namespace LoanApp.Web.Service
             return await baseService.SendAsync(new Request()
             {
                 ApiType = SD.ApiType.POST,
-                Url = SD.LoanApiBaseUrl + "/api/loan/createLoanRequest",
+                Url = SD.LoanApiBaseUrl + "api/loan/createLoanRequest",
                 Data = loanRequest,
             });
         }

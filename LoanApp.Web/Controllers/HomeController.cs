@@ -17,23 +17,38 @@ namespace LoanApp.Web.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var model = new LoanRequest
+            {
+                LoanAmount = 10000 // Set a default or previously submitted value
+            };
+            return View(model);
         }
         public async Task<IActionResult> LoanRequest(LoanRequest loanRequest)
         {
-            var response = await _loanService.CreateLoanRequest(loanRequest);
-
-            if(response.IsSucess)
+            try
             {
-                TempData["success"] = response.Result;
-                return RedirectToAction("Index");
+                var response = await _loanService.CreateLoanRequest(loanRequest);
+
+                if (response.IsSucess)
+                {
+                    TempData["success"] = response.Result;
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["error"] = response.Message;
+                    return RedirectToAction("Index");
+                }
             }
-            else
+            catch (Exception ex)
             {
                 TempData["error"] = "Something went wrong";
                 return RedirectToAction("Index");
             }
-            
+        }
+        public async Task<IActionResult> Dashboard()
+        {
+            return View();
         }
 
 
