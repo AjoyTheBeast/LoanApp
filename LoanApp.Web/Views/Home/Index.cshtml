@@ -2,7 +2,7 @@
 
 @model LoanRequest
 
-<form method="post" asp-action="LoanRequest">
+<form id="loanForm" method="post" asp-action="LoanRequest" novalidate>
     <br />
     <div class="container border p-4 shadow-lg rounded" style="max-width: 700px; margin: auto;">
         <h1 class="text-black text-center mb-4">Apply For Loan</h1>
@@ -60,19 +60,65 @@
                 <span asp-validation-for="AnnualAmount" class="text-danger"></span>
             </div>
             <div class="col-md-9">
-                <button type="submit" class="btn btn-danger btn-lg" onclick="@("window.location.href='" + @Url.Action("Index", "DashBoard") + "'");" >Back</button>
+                <button type="button" class="btn btn-danger btn-lg" onclick="window.location.href='@Url.Action("Index", "DashBoard")';">Back</button>
             </div>
             <div class="col-md-3">
-                <button type="submit" class="btn btn-success btn-lg">Start Process</button>
+                <button type="submit" class="btn btn-success btn-lg" id="apply-loan">Start Process</button>
             </div>
         </div>
     </div>
 </form>
 
+<div class="modal fade" id="dialog-box" tabindex="-1" aria-labelledby="dialogLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dialogLabel">Notification</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <p>Please check back to the dashboard.</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-success" id="close-dialogBox" data-bs-dismiss="modal" onclick="window.location.href='@Url.Action("Index", "DashBoard")';">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script>
         function updateLoanAmountOutput(value) {
             document.getElementById("loanAmountOutput").value = value;
+        }
+
+        document.getElementById("loanForm").addEventListener("submit", handleStartProcess);
+
+        function handleStartProcess(event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+            const loanData = {};
+            formData.forEach((value, key) => {
+                loanData[key] = value;
+            });
+            fetch("/Home/LoanRequest", {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(loanData)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        handleDialogBox();
+                    } else {
+                        console.error("Error submitting form:", response.statusText);
+                    }
+                })
+                .catch(err => console.log(err));
+        }
+        function handleDialogBox() {
+            var dialogBox = new bootstrap.Modal(document.getElementById('dialog-box'));
+            dialogBox.show();
         }
     </script>
     <partial name="_ValidationScriptsPartial" />

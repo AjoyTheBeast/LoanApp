@@ -23,32 +23,28 @@ namespace LoanApp.Web.Controllers
             };
             return View(model);
         }
-        public async Task<IActionResult> LoanRequest(LoanRequest loanRequest)
+        public async Task<IActionResult> LoanRequest([FromBody] LoanRequest loanRequest)
         {
             try
             {
-                var response = await _loanService.CreateLoanRequest(loanRequest);
-
-                if (response.IsSucess)
+                if (ModelState.IsValid)
                 {
-                    TempData["success"] = response.Result;
-                    return RedirectToAction("Index");
+                    var response = await _loanService.CreateLoanRequest(loanRequest);
+                    if (response.IsSucess)
+                    {
+                        return Ok();
+                    }
+                    else
+                    {
+                        return BadRequest(new { message = response.Message });
+                    }
                 }
-                else
-                {
-                    TempData["error"] = response.Message;
-                    return RedirectToAction("Index");
-                }
+                return BadRequest(ModelState);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                TempData["error"] = "Something went wrong";
-                return RedirectToAction("Index");
+                return StatusCode(500, "Something went wrong.");
             }
-        }
-        public async Task<IActionResult> Dashboard()
-        {
-            return View();
         }
 
 

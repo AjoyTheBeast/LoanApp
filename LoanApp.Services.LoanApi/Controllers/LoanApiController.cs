@@ -1,6 +1,7 @@
 ﻿using LoanApp.Services.LoanApi.Models;
 using LoanApp.Services.LoanApi.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace LoanApp.Services.LoanApi.Controllers
 {
@@ -29,13 +30,49 @@ namespace LoanApp.Services.LoanApi.Controllers
                     LoanAmount = loanRequestDTO.LoanAmount,
                     ApplicantId = loanRequestDTO.ApplicantId,
                     Email = loanRequestDTO.Email,
-                    AnnualAmount = loanRequestDTO.AnnualAmount
+                    AnnualAmount = loanRequestDTO.AnnualAmount,
+                    Status = "InProgress",
                 };
                 _dbContext.LoanRequests.Add(request);
                 await _dbContext.SaveChangesAsync();
 
-                response.IsSucess = true;
                 response.Result = "Loan Submitted Successfully";
+            }
+            catch (Exception ex)
+            {
+                response.IsSucess = false;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+        [HttpGet("getLoanById")]
+        public async Task<Response> GetLoanDetailById(string loanId)
+        {
+            try
+            {
+                var loanDetail = await _dbContext.LoanRequests.FirstOrDefaultAsync(x => x.LoanNumber == loanId);
+                if(loanDetail != null)
+                {
+                    response.Result = loanDetail;
+                }
+            }
+            catch(Exception ex)
+            {
+                response.IsSucess = false;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+        [HttpGet("getLoanDetails")]
+        public async Task<Response> GetLoanDetails()
+        {
+            try
+            {
+                var loanDetails = await _dbContext.LoanRequests.ToListAsync();
+                if (loanDetails != null)
+                {
+                    response.Result = loanDetails;
+                }
             }
             catch (Exception ex)
             {
