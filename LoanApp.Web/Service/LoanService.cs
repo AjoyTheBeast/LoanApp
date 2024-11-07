@@ -19,7 +19,7 @@ namespace LoanApp.Web.Service
                 ApiType = SD.ApiType.POST,
                 Url = SD.LoanApiBaseUrl + "api/loan/createLoanRequest",
                 Data = loanRequest,
-            });
+            }, true);
         }
     }
 }

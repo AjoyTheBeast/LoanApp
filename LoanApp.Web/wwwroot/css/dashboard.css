@@ -1,0 +1,47 @@
+﻿.loan-status-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.loan-status-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 600px; /* Adjust the max width to control the layout width on large screens */
+    margin: 20px;
+}
+
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-label {
+    font-size: 18px;
+}
+
+.status-circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #ccc; /* Default border color */
+}
+
+.row {
+    margin-top: 20px;
+}
+
+/* Center elements on small screens */
+.d-flex {
+    display: flex;
+    align-items: center;
+}
+
+.btn-lg {
+    font-size: 18px;
+}

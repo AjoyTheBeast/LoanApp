@@ -1,0 +1,6 @@
+@LoanApp.Services.AuthApi_HostAddress = http://localhost:5013
+
+GET {{LoanApp.Services.AuthApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

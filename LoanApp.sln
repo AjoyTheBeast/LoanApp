@@ -7,9 +7,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FrontEnd", "FrontEnd", "{6D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{134EBC63-6FD1-464C-9498-791498628C4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanApp.Web", "LoanApp.Web\LoanApp.Web.csproj", "{7546411E-4B51-4DFF-8412-3992A0AEE185}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoanApp.Web", "LoanApp.Web\LoanApp.Web.csproj", "{7546411E-4B51-4DFF-8412-3992A0AEE185}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanApp.Services.LoanApi", "LoanApp.Services.LoanApi\LoanApp.Services.LoanApi.csproj", "{D1FAFFEA-71C7-46FE-BC95-4977E5B72F92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoanApp.Services.LoanApi", "LoanApp.Services.LoanApi\LoanApp.Services.LoanApi.csproj", "{D1FAFFEA-71C7-46FE-BC95-4977E5B72F92}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanApp.Services.AuthApi", "LoanApp.Services.AuthApi\LoanApp.Services.AuthApi.csproj", "{1B90B9EC-A28B-42B4-B09D-33F3CDF2FE89}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +27,10 @@ Global
 		{D1FAFFEA-71C7-46FE-BC95-4977E5B72F92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1FAFFEA-71C7-46FE-BC95-4977E5B72F92}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1FAFFEA-71C7-46FE-BC95-4977E5B72F92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B90B9EC-A28B-42B4-B09D-33F3CDF2FE89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B90B9EC-A28B-42B4-B09D-33F3CDF2FE89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B90B9EC-A28B-42B4-B09D-33F3CDF2FE89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B90B9EC-A28B-42B4-B09D-33F3CDF2FE89}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{7546411E-4B51-4DFF-8412-3992A0AEE185} = {6DE73AF1-D2DC-4BA4-8341-CC9221A1C2BF}
 		{D1FAFFEA-71C7-46FE-BC95-4977E5B72F92} = {134EBC63-6FD1-464C-9498-791498628C4D}
+		{1B90B9EC-A28B-42B4-B09D-33F3CDF2FE89} = {134EBC63-6FD1-464C-9498-791498628C4D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0A1F193C-6F81-458D-B073-3E53353422B6}
