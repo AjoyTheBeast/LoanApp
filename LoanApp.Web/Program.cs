@@ -1,6 +1,8 @@
 using LoanApp.Web.Service;
 using LoanApp.Web.Service.IService;
 using LoanApp.Web.Utility;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,11 +10,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 SD.LoanApiBaseUrl = builder.Configuration["ServiceUrls:LoanApiBaseUrl"];
+SD.AuthApiBaseUrl = builder.Configuration["ServiceUrls:AuthApiBaseUrl"];
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient<ILoanService, LoanService>();
 builder.Services.AddScoped<ILoanService, LoanService>();
 builder.Services.AddScoped<IBaseService, BaseService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ITokenProvider, TokenProvider>();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(15);
+        options.LoginPath = "/Auth/Login";
+    });
 
 var app = builder.Build();
 
@@ -29,6 +40,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

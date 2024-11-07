@@ -9,17 +9,23 @@ namespace LoanApp.Web.Service
     public class BaseService : IBaseService
     {
         private readonly IHttpClientFactory httpClientFactory;
-
-        public BaseService(IHttpClientFactory httpClientFactory)
+        private readonly ITokenProvider _tokenProvider;
+        public BaseService(IHttpClientFactory httpClientFactory, ITokenProvider tokenProvider)
         {
             this.httpClientFactory = httpClientFactory;
+            _tokenProvider = tokenProvider;
         }
-        public async Task<Response> SendAsync(Request request)
+        public async Task<Response> SendAsync(Request request, bool withBearer)
         {
             var client = httpClientFactory.CreateClient("loan");
             HttpRequestMessage message = new();
 
             message.Headers.Add("Accept", "application/json");
+            if(withBearer)
+            {
+                var token = _tokenProvider.GetToken();
+                message.Headers.Add("Authorization", $"Bearer {token}");
+            }
 
             message.Content = new StringContent(JsonConvert.SerializeObject(request.Data), Encoding.UTF8, "application/json");
 

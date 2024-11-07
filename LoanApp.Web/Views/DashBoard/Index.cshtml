@@ -1,9 +1,57 @@
-﻿
-<div class="row">
-    <div class="col-md-9">
-        <label class="control-label pt-2" style="font-size:18px;">Start a loan application</label>
-    </div>
-    <div class="col-md-3">
-        <button value="start" onclick="@("window.location.href='" + @Url.Action("Index", "Home") + "'");" class="btn btn-success btn-lg">Start</button>
+﻿<div class="container loan-status-wrapper">
+    <div class="loan-status-container">
+        <h2 class="text-center">Loan Status</h2>
+        <div class="status-item">
+            <span class="status-label">App Started</span>
+            <div class="status-circle started"></div>
+        </div>
+        <div class="status-item">
+            <span class="status-label">InProgress</span>
+            <div class="status-circle inprogress" id="inProgress"></div>
+        </div>
+        <div class="status-item">
+            <span class="status-label">Approved</span>
+            <div class="status-circle approved"></div>
+        </div>
+        <div class="status-item">
+            <span class="status-label">Rejected</span>
+            <div class="status-circle rejected"></div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-start">
+                <label class="control-label pt-2" style="font-size: 18px;">Start a loan application</label>
+            </div>
+            <div class="col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end">
+                <button value="start" onclick="@("window.location.href='" + @Url.Action("Index", "Home") + "'");" class="btn btn-success btn-lg">Start</button>
+            </div>
+        </div>
     </div>
 </div>
+
+<link rel="stylesheet" href="~/css/dashboard.css" />
+@* <script src="~/js/signalr.js"></script>
+@section Scripts {
+    <script>
+        const inProgress = document.getElementById("inProgress");
+        
+        const connectionLoanStatus = new signalR.HubConnectionBuilder()
+            .withUrl("https://localhost:7136/hubs/loanStatus", {
+                withCredentials: true
+            })
+            .withAutomaticReconnect([0, 2000, 10000, 30000])
+            .build();
+
+        connectionLoanStatus.start()
+            .then(() => {
+                console.log("SignalR connection established successfully");
+                // connectionLoanStatus.invoke('GetLoanStatus').then(res => console.log(res));
+            })
+            .catch((err) => console.log(err))
+
+        connectionLoanStatus.on("receiveLoanStatusUpdate", (status) => {
+            console.log(status)
+        });
+
+        
+    </script>
+} *@

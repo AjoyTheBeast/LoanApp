@@ -1,3 +1,5 @@
+using LoanApp.Services.LoanApi;
+using LoanApp.Services.LoanApi.Extensions;
 using LoanApp.Services.LoanApi.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,8 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("default")));
+
+builder.AddAppAuthentication();
+builder.AddSwaggerGenAuthentication();
 
 var app = builder.Build();
 
@@ -22,6 +26,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

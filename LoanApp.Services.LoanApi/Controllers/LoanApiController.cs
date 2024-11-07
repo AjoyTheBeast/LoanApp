@@ -1,5 +1,6 @@
 ﻿using LoanApp.Services.LoanApi.Models;
 using LoanApp.Services.LoanApi.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +18,7 @@ namespace LoanApp.Services.LoanApi.Controllers
             _dbContext = dbContext;
         }
         [HttpPost("createLoanRequest")]
+        [Authorize(Roles ="Customer")]
         public async Task<Response> CreateLoanRequest([FromBody]LoanRequestDTO loanRequestDTO)
         {
             try

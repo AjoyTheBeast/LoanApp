@@ -1,5 +1,6 @@
 using LoanApp.Web.Models;
 using LoanApp.Web.Service.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -14,7 +15,7 @@ namespace LoanApp.Web.Controllers
             _logger = logger;
             _loanService = loanService;
         }
-
+        [Authorize(Roles ="Customer")]
         public IActionResult Index()
         {
             var model = new LoanRequest
@@ -23,6 +24,7 @@ namespace LoanApp.Web.Controllers
             };
             return View(model);
         }
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> LoanRequest([FromBody] LoanRequest loanRequest)
         {
             try
