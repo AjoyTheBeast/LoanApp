@@ -63,7 +63,7 @@
                 <button type="button" class="btn btn-danger btn-lg" onclick="window.location.href='@Url.Action("Index", "DashBoard")';">Back</button>
             </div>
             <div class="col-md-3">
-                <button type="submit" class="btn btn-success btn-lg" id="apply-loan">Start</button>
+                <button type="submit" class="btn btn-success btn-lg" id="apply-loan">Next</button>
             </div>
         </div>
     </div>
@@ -77,7 +77,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center">
-                <p>Please check back to the dashboard.</p>
+                <p>Loan submitted but validation failed.</p>
             </div>
             <div class="modal-footer justify-content-center">
                 <button type="button" class="btn btn-success" id="close-dialogBox" data-bs-dismiss="modal" onclick="window.location.href='@Url.Action("Index", "DashBoard")';">Close</button>
@@ -109,9 +109,9 @@
             })
                 .then(response => {
                     if (response.ok) {
-                        handleDialogBox();
+                        window.location.href = "/UploadDocument/Index";
                     } else {
-                        console.error("Error submitting form:", response.statusText);
+                        handleDialogBox();
                     }
                 })
                 .catch(err => console.log(err));

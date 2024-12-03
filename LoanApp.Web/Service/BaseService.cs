@@ -20,14 +20,43 @@ namespace LoanApp.Web.Service
             var client = httpClientFactory.CreateClient("loan");
             HttpRequestMessage message = new();
 
-            message.Headers.Add("Accept", "application/json");
-            if(withBearer)
+            if(request.ContentType == ContentType.MultipartFormData)
+                message.Headers.Add("Accept", "*/*");
+            else
+                message.Headers.Add("Accept", "application/json");
+
+            if (withBearer)
             {
                 var token = _tokenProvider.GetToken();
                 message.Headers.Add("Authorization", $"Bearer {token}");
             }
 
-            message.Content = new StringContent(JsonConvert.SerializeObject(request.Data), Encoding.UTF8, "application/json");
+            if(request.ContentType == ContentType.MultipartFormData)
+            {
+                var content = new MultipartFormDataContent();
+                foreach(var prop in request.Data.GetType().GetProperties())
+                {
+                    var value = prop.GetValue(request.Data);
+                    if(value is FormFile)
+                    {
+                        var file = (FormFile)value;
+                        if(file != null)
+                        {
+                            content.Add(new StreamContent(file.OpenReadStream()), prop.Name, file.FileName);
+                        }
+                    }
+                    else
+                    {
+                        content.Add(new StringContent(value == null ? "" : value.ToString()), prop.Name);
+                    }
+                }
+                message.Content = content;
+            }
+            else
+            {
+                if(request.Data != null)
+                    message.Content = new StringContent(JsonConvert.SerializeObject(request.Data), Encoding.UTF8, "application/json");
+            }
 
             message.RequestUri = new Uri(request.Url);
 
