@@ -5,5 +5,6 @@ namespace LoanApp.Web.Service.IService
     public interface ILoanService
     {
         Task<Response?> CreateLoanRequest(LoanRequest loanRequest);
+        Task<Response> UploadDocument(FileUpload file);
     }
 }

@@ -16,6 +16,7 @@ public partial class AppDbContext : DbContext
     }
 
     public virtual DbSet<LoanRequest> LoanRequests { get; set; }
+    public DbSet<Documents> Documents { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -34,6 +34,8 @@ namespace LoanApp.Web.Controllers
                     var response = await _loanService.CreateLoanRequest(loanRequest);
                     if (response.IsSucess)
                     {
+                        TempData["Success"] = response.Message;
+                        TempData["RequestId"] = Convert.ToInt32(response.Result);
                         return Ok();
                     }
                     else
@@ -48,7 +50,6 @@ namespace LoanApp.Web.Controllers
                 return StatusCode(500, "Something went wrong.");
             }
         }
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

@@ -1,5 +1,6 @@
 ﻿using LoanApp.Services.LoanApi.Models;
 using LoanApp.Services.LoanApi.Models.DTO;
+using LoanApp.Services.LoanApi.Services.IService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,10 +13,12 @@ namespace LoanApp.Services.LoanApi.Controllers
     {
         private readonly Response response;
         private readonly AppDbContext _dbContext;
-        public LoanApiController(AppDbContext dbContext)
+        private readonly IAzureFunctionService _functionService;
+        public LoanApiController(AppDbContext dbContext, IAzureFunctionService functionService)
         {
             response = new Response();
             _dbContext = dbContext;
+            _functionService = functionService;
         }
         [HttpPost("createLoanRequest")]
         [Authorize(Roles ="Customer")]
@@ -23,6 +26,8 @@ namespace LoanApp.Services.LoanApi.Controllers
         {
             try
             {
+                var isValid = await _functionService.ValidateLoanDetails(loanRequestDTO);
+                string status = isValid ? "basicDetailsVerified" : "basicDetailsPending";
                 LoanRequest request = new LoanRequest()
                 {
                     LoanNumber = new Random().Next(1000, 9999).ToString(),
@@ -33,12 +38,22 @@ namespace LoanApp.Services.LoanApi.Controllers
                     ApplicantId = loanRequestDTO.ApplicantId,
                     Email = loanRequestDTO.Email,
                     AnnualAmount = loanRequestDTO.AnnualAmount,
-                    Status = "InProgress",
+                    Status = status,
                 };
                 _dbContext.LoanRequests.Add(request);
                 await _dbContext.SaveChangesAsync();
-
-                response.Result = "Loan Submitted Successfully";
+                
+                if(isValid)
+                {
+                    var requestId = request.Id;
+                    response.Message = "Basic details have been approved by system";
+                    response.Result = requestId;
+                }
+                else
+                {
+                    response.IsSucess = false;
+                    response.Message = "Loan submitted but validation failed. Please correct the details.";
+                }
             }
             catch (Exception ex)
             {
@@ -74,6 +89,44 @@ namespace LoanApp.Services.LoanApi.Controllers
                 if (loanDetails != null)
                 {
                     response.Result = loanDetails;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsSucess = false;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+        [HttpPost("uploadDocument")]
+        [Authorize(Roles = "Customer")]
+        public async Task<Response> UploadDocument(DocumentUploadDTO documentUploadDTO)
+        {
+            try
+            {
+                if(documentUploadDTO != null)
+                {
+                    string fileName = documentUploadDTO.File.FileName;
+                    var fileExtension = Path.GetExtension(fileName);
+                    var localFilePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\Images", $"{fileName}{fileExtension}");
+
+                    FileInfo file = new FileInfo(localFilePath);
+                    if(file.Exists)
+                        file.Delete();
+
+                    using var stream = new FileStream(localFilePath, FileMode.Create);
+                    documentUploadDTO.File.CopyTo(stream);
+
+                    var document = new Documents()
+                    {
+                        RequestId = documentUploadDTO.RequestId,
+                        FileName = fileName,
+                        FilePath = localFilePath
+                    };
+                    _dbContext.Documents.Add(document);
+                    await _dbContext.SaveChangesAsync();
+                    response.Message = "Document saved and uploaded successfully";
+                    response.IsSucess = true;
                 }
             }
             catch (Exception ex)

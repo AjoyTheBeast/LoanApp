@@ -21,5 +21,16 @@ namespace LoanApp.Web.Service
                 Data = loanRequest,
             }, true);
         }
+
+        public async Task<Response> UploadDocument(FileUpload file)
+        {
+            return await baseService.SendAsync(new Request()
+            {
+                ApiType = SD.ApiType.POST,
+                Url = SD.LoanApiBaseUrl + "api/loan/UploadDocument",
+                Data = file,
+                ContentType = SD.ContentType.MultipartFormData
+            }, true);
+        }
     }
 }
